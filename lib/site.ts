@@ -4,7 +4,7 @@
  */
 export const SITE = {
   name: 'FinPulse Analytics',
-  ownerName: 'Amrit',
+  ownerName: 'Agamjot Kaur',
   contactEmail: '', // e.g. 'amrit@example.com'
   linkedinUrl: '', // e.g. 'https://www.linkedin.com/in/your-profile'
   tagline: 'Find the numbers that don’t belong.',
