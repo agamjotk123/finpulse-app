@@ -1,4 +1,4 @@
-# FinPulse Analytics
+# Benfora
 
 ## Run it
 1. Install Node.js (v22 LTS) from https://nodejs.org

@@ -71,7 +71,7 @@ export function buildExcelExport(wb: ParsedWorkbook, result: AnalysisResult, rev
     used,
     'Summary',
     [
-      ['FinPulse audit export', ''],
+      ['Benfora audit export', ''],
       ['File', wb.fileName],
       ['Generated', new Date(result.generatedAt)],
       ['Rows scanned', s.totalRows],
@@ -107,7 +107,7 @@ export function buildExcelExport(wb: ParsedWorkbook, result: AnalysisResult, rev
       book,
       used,
       'Patterns',
-      [['Sheet', 'Pattern', 'Rows', 'Explanation', 'Search term in FinPulse'], ...result.patterns.map((p) => [p.sheet, p.title, p.rowCount, p.detail, p.filter])],
+      [['Sheet', 'Pattern', 'Rows', 'Explanation', 'Search term in Benfora'], ...result.patterns.map((p) => [p.sheet, p.title, p.rowCount, p.detail, p.filter])],
       { filter: true, widths: [16, 48, 8, 90, 24] },
     );
   }
@@ -169,7 +169,7 @@ export function buildExcelExport(wb: ParsedWorkbook, result: AnalysisResult, rev
   for (const r of result.rowRisks) riskByKey.set(r.key, r);
   for (const sheet of wb.sheets) {
     const dates = dateColumns(sheet);
-    const table: Table = [[...sheet.headers, 'FinPulse risk', 'FinPulse severity', 'FinPulse reason']];
+    const table: Table = [[...sheet.headers, 'Benfora risk', 'Benfora severity', 'Benfora reason']];
     for (let i = 0; i < sheet.rowCount; i++) {
       const r = riskByKey.get(`${sheet.name}\u0000${i}`);
       table.push([
@@ -182,8 +182,8 @@ export function buildExcelExport(wb: ParsedWorkbook, result: AnalysisResult, rev
     addSheet(book, used, `${sheet.name} + risk`, table, { filter: true });
   }
 
-  book.Props = { Title: `FinPulse audit export: ${wb.fileName}`, Author: 'FinPulse Analytics', CreatedDate: new Date() };
+  book.Props = { Title: `Benfora audit export: ${wb.fileName}`, Author: 'Benfora', CreatedDate: new Date() };
   const buffer = XLSX.write(book, { type: 'array', bookType: 'xlsx', compression: true }) as ArrayBuffer;
   const stem = wb.fileName.replace(/\.[^.]+$/, '');
-  return { buffer, fileName: `${stem} - FinPulse audit.xlsx` };
+  return { buffer, fileName: `${stem} - Benfora audit.xlsx` };
 }

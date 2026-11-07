@@ -1,7 +1,7 @@
 /**
  * Anonymous product analytics.
  *
- * Privacy rules (FinPulse's whole promise is that files never leave the browser):
+ * Privacy rules (Benfora's whole promise is that files never leave the browser):
  *  - Only event names and coarse buckets are sent: never file names, column names,
  *    values, reasons or anything from inside a spreadsheet.
  *  - No cookies: PostHog runs with in-memory persistence, no autocapture and no

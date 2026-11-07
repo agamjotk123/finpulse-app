@@ -15,7 +15,7 @@ const SAMPLES = [
   },
 ];
 
-/** One-click demo data, so visitors from LinkedIn can try FinPulse without their own files. */
+/** One-click demo data, so visitors from LinkedIn can try Benfora without their own files. */
 export function SampleFiles({ onFile, disabled }: { onFile: (f: File) => void; disabled?: boolean }) {
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState(false);

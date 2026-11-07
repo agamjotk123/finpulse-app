@@ -8,6 +8,7 @@ import { EMPTY_REVIEW, type Review, type Reviews } from '@/lib/ui/review';
  * Keyed by file name and size so re-opening the same workbook restores the work.
  */
 export function useReviews(fileName: string, sizeBytes: number) {
+  // Key kept from the original name so reviews saved before the rebrand still load.
   const storageKey = `finpulse:reviews:${fileName}:${sizeBytes}`;
   const [reviews, setReviews] = useState<Reviews>({});
 

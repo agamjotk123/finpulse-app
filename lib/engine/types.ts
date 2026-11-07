@@ -1,5 +1,5 @@
 /**
- * FinPulse Analytics — core engine types.
+ * Benfora: core engine types.
  * Shared by the Web Worker, the React hook and (later) the dashboard + export layers.
  */
 

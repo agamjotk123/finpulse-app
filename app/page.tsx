@@ -23,8 +23,8 @@ export default function HomePage() {
     <div className="min-h-screen bg-ink text-paper">
       <div className="mx-auto max-w-7xl px-5 pb-24 pt-8 md:px-8">
         <header className="flex items-center gap-3">
-          <BrandMark size={34} />
-          <span className="text-lg font-semibold tracking-tight [font-stretch:110%]">FinPulse</span>
+          <BrandMark size={38} />
+          <span className="text-lg font-semibold tracking-tight [font-stretch:110%]">{SITE.name}</span>
           {contact && (
             <a
               href={contact}

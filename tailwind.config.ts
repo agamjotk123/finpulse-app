@@ -1,6 +1,6 @@
 import type { Config } from 'tailwindcss';
 
-/** Brand tokens taken directly from the FinPulse logo. Merge into your existing config. */
+/** Brand tokens taken directly from the Benfora logo. Merge into your existing config. */
 const config: Config = {
   content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './hooks/**/*.{ts,tsx}'],
   theme: {

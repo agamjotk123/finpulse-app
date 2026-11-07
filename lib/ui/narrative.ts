@@ -11,7 +11,7 @@ export function buildNarrative(result: AnalysisResult, reviews: Reviews): string
   const sheets = result.workbook.sheets.length;
 
   out.push(
-    `FinPulse scanned ${fmtInt(s.totalRows)} rows${sheets > 1 ? ` across ${sheets} sheets` : ''} of ${result.workbook.fileName} with ${DETECTOR_COUNT} detection models. ` +
+    `Benfora scanned ${fmtInt(s.totalRows)} rows${sheets > 1 ? ` across ${sheets} sheets` : ''} of ${result.workbook.fileName} with ${DETECTOR_COUNT} detection models. ` +
       (s.flaggedRows
         ? `${fmtInt(s.flaggedRows)} rows (${share}%) were flagged for review, including ${fmtInt(s.bySeverity.critical)} critical and ${fmtInt(s.bySeverity.high)} high-risk rows.`
         : 'No rows crossed the configured risk thresholds.'),

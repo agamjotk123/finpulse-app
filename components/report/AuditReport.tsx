@@ -86,10 +86,8 @@ export function AuditReport({ result, reviews, preparedBy }: Props) {
     <article className="fp-report text-[9.5pt] leading-[1.45]" style={{ color: INK, fontVariantNumeric: 'tabular-nums' }}>
       <header className="flex items-center justify-between border-b pb-4" style={{ borderColor: RULE }}>
         <div className="flex items-center gap-2.5">
-          <span className="rounded-full bg-[#04050A] p-1">
-            <BrandMark size={26} />
-          </span>
-          <span className="text-[12pt] font-semibold">FinPulse Analytics</span>
+          <BrandMark size={34} variant="mini" />
+          <span className="text-[12pt] font-semibold">Benfora</span>
         </div>
         <div className="text-right text-[8.5pt]" style={{ color: MUTED }}>
           Anomaly audit report

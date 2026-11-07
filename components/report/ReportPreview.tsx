@@ -7,6 +7,7 @@ import type { Reviews } from '@/lib/ui/review';
 import { AuditReport } from './AuditReport';
 import { track } from '@/lib/analytics';
 
+// Storage key kept from the original name so saved settings carry over.
 const PREPARER_KEY = 'finpulse:prepared-by';
 
 interface Props {
@@ -46,7 +47,7 @@ export function ReportPreview({ result, reviews, onClose }: Props) {
     // Chrome and Safari use the page title as the suggested PDF file name.
     const previous = document.title;
     const stem = result.workbook.fileName.replace(/\.[^.]+$/, '');
-    document.title = `${stem} - FinPulse audit report`;
+    document.title = `${stem} - Benfora audit report`;
     const restore = () => {
       document.title = previous;
       window.removeEventListener('afterprint', restore);

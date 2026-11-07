@@ -1,5 +1,5 @@
 /**
- * FinPulse analysis worker.
+ * Benfora analysis worker.
  * Parsing and every statistical model run here, off the UI thread and entirely inside
  * the user's browser. The workbook is never uploaded anywhere.
  */
