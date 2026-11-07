@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import type { AnalysisResult } from '@/lib/engine/types';
 import type { Reviews } from '@/lib/ui/review';
 import { AuditReport } from './AuditReport';
+import { track } from '@/lib/analytics';
 
 const PREPARER_KEY = 'finpulse:prepared-by';
 
@@ -51,6 +52,7 @@ export function ReportPreview({ result, reviews, onClose }: Props) {
       window.removeEventListener('afterprint', restore);
     };
     window.addEventListener('afterprint', restore);
+    track('pdf_saved');
     window.print();
   };
 

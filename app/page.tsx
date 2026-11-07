@@ -6,6 +6,7 @@ import { AnalysisProgress } from '@/components/upload/AnalysisProgress';
 import { FileDropzone } from '@/components/upload/FileDropzone';
 import { SampleFiles } from '@/components/upload/SampleFiles';
 import { SITE, contactHref } from '@/lib/site';
+import { track } from '@/lib/analytics';
 import { useAnalysisEngine } from '@/hooks/useAnalysisEngine';
 import { DETECTOR_COUNT } from '@/lib/engine/types';
 
@@ -29,6 +30,7 @@ export default function HomePage() {
               href={contact}
               target={contact.startsWith('http') ? '_blank' : undefined}
               rel="noopener noreferrer"
+              onClick={() => track('contact_clicked', { place: 'header' })}
               className="ml-auto rounded-full border border-graphite px-4 py-2 text-sm text-paper hover:border-paper/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse"
             >
               Get in touch
@@ -51,9 +53,9 @@ export default function HomePage() {
               Every row of your ledger is scored by {DETECTOR_COUNT} detection models, and every flag comes with a plain-language reason.
             </p>
             <div className="mt-12">
-              <FileDropzone onFile={engine.analyzeFile} maxMb={MAX_MB} />
+              <FileDropzone onFile={(f) => engine.analyzeFile(f, 'upload')} maxMb={MAX_MB} />
             </div>
-            <SampleFiles onFile={engine.analyzeFile} />
+            <SampleFiles onFile={(f) => engine.analyzeFile(f, 'sample')} />
           </div>
         )}
 
@@ -76,13 +78,19 @@ export default function HomePage() {
           </div>
         )}
         <footer className="mt-24 flex flex-wrap items-center justify-between gap-4 border-t border-graphite/60 pt-6 text-sm text-haze">
-          <p>Your files are analysed in your browser and never uploaded.</p>
+          <p className="max-w-xl">Your files are analysed in your browser and never uploaded. We count anonymous usage, like how many scans are run, but never see your data.</p>
           <p>
             Built by {SITE.ownerName}
             {contact && (
               <>
                 {', '}
-                <a href={contact} className="text-paper underline-offset-4 hover:underline" target={contact.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer">
+                <a
+                  href={contact}
+                  onClick={() => track('contact_clicked', { place: 'footer' })}
+                  className="text-paper underline-offset-4 hover:underline"
+                  target={contact.startsWith('http') ? '_blank' : undefined}
+                  rel="noopener noreferrer"
+                >
                   get in touch
                 </a>
               </>

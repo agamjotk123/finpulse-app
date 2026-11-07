@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { DEFAULT_CONFIG, mergeConfig, type ConfigPatch } from '@/lib/engine/config';
 import type { EngineStage, WorkerRequest, WorkerResponse } from '@/lib/engine/protocol';
 import type { AnalysisConfig, AnalysisResult } from '@/lib/engine/types';
+import { bucket, track } from '@/lib/analytics';
 import { downloadBlob } from '@/lib/ui/download';
 import type { Reviews } from '@/lib/ui/review';
 
@@ -12,6 +13,9 @@ export type EngineStatus = 'idle' | 'working' | 'ready' | 'error';
 export const ACCEPTED_EXTENSIONS = ['.xlsx', '.xlsm', '.xls', '.csv', '.ods'] as const;
 const DEFAULT_MAX_BYTES = 50 * 1024 * 1024;
 const REANALYZE_DEBOUNCE_MS = 250;
+
+/** Where a scanned file came from: the user's own file or one of the demo samples. */
+export type ScanSource = 'upload' | 'sample';
 
 export interface EngineProgress {
   stage: EngineStage;
@@ -45,6 +49,8 @@ export function useAnalysisEngine(options: UseAnalysisEngineOptions = {}) {
   const configRef = useRef(config);
   const hasData = useRef(false);
   const debounce = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /** The file scan in flight, so its outcome can be counted once (not on every re-analysis). */
+  const scanMeta = useRef<{ id: string; source: ScanSource; ext: string; started: number } | null>(null);
   const pendingExports = useRef(new Map<string, { resolve: () => void; reject: (e: Error) => void }>());
 
   const send = (w: Worker, msg: WorkerRequest, transfer?: Transferable[]) => w.postMessage(msg, transfer ?? []);
@@ -61,6 +67,7 @@ export function useAnalysisEngine(options: UseAnalysisEngineOptions = {}) {
         pendingExports.current.delete(msg.id);
         if (msg.type === 'export-ready') {
           downloadBlob(new Blob([msg.buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), msg.fileName);
+          track('excel_downloaded');
           pending.resolve();
         } else if (msg.type === 'error') {
           pending.reject(new Error(msg.message));
@@ -71,11 +78,29 @@ export function useAnalysisEngine(options: UseAnalysisEngineOptions = {}) {
       if (msg.type === 'progress') {
         setProgress({ stage: msg.stage, label: msg.label, pct: msg.pct });
       } else if (msg.type === 'result') {
+        if (scanMeta.current?.id === msg.id) {
+          const s = msg.result.summary;
+          track('scan_completed', {
+            source: scanMeta.current.source,
+            file_type: scanMeta.current.ext,
+            rows: bucket(s.totalRows),
+            flagged: bucket(s.flaggedRows),
+            has_critical: s.bySeverity.critical > 0,
+            has_pattern: msg.result.patterns.length > 0,
+            sheets: msg.result.workbook.sheets.length,
+            seconds: Math.round((performance.now() - scanMeta.current.started) / 100) / 10,
+          });
+          scanMeta.current = null;
+        }
         hasData.current = true;
         setResult(msg.result);
         setStatus('ready');
         setProgress(null);
       } else if (msg.type === 'error') {
+        if (scanMeta.current?.id === msg.id) {
+          track('scan_failed', { source: scanMeta.current.source, file_type: scanMeta.current.ext });
+          scanMeta.current = null;
+        }
         setError(msg.message);
         setStatus('error');
         setProgress(null);
@@ -100,7 +125,7 @@ export function useAnalysisEngine(options: UseAnalysisEngineOptions = {}) {
   );
 
   const analyzeFile = useCallback(
-    async (f: File) => {
+    async (f: File, source: ScanSource = 'upload') => {
       const ext = f.name.slice(f.name.lastIndexOf('.')).toLowerCase();
       if (!(ACCEPTED_EXTENSIONS as readonly string[]).includes(ext)) {
         setError(`${f.name} isn't a supported file. Use ${ACCEPTED_EXTENSIONS.join(', ')}.`);
@@ -116,6 +141,7 @@ export function useAnalysisEngine(options: UseAnalysisEngineOptions = {}) {
       const id = newId();
       activeId.current = id;
       hasData.current = false;
+      scanMeta.current = { id, source, ext, started: performance.now() };
       setFile({ name: f.name, size: f.size });
       setResult(null);
       setError(null);

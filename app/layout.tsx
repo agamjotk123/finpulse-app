@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Archivo } from 'next/font/google';
 import { SITE } from '@/lib/site';
+import { AnalyticsProvider } from '@/components/AnalyticsProvider';
 import './globals.css';
 
 // Archivo: a grotesque with a width axis. Headline figures use it slightly expanded.
@@ -36,7 +37,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={archivo.variable}>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        {children}
+        <AnalyticsProvider />
+      </body>
     </html>
   );
 }

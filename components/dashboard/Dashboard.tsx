@@ -5,7 +5,8 @@ import type { ConfigPatch } from '@/lib/engine/config';
 import type { AnalysisConfig, AnalysisResult } from '@/lib/engine/types';
 import { useReviews } from '@/hooks/useReviews';
 import { ReportPreview } from '@/components/report/ReportPreview';
-import type { Reviews } from '@/lib/ui/review';
+import type { ReviewStatus, Reviews } from '@/lib/ui/review';
+import { track } from '@/lib/analytics';
 import { fmtBytes, fmtInt, plural } from '@/lib/ui/format';
 import { amountAtRisk, primaryAmountColumn } from '@/lib/ui/insights';
 import { ColumnExplorer } from './ColumnExplorer';
@@ -58,6 +59,21 @@ export function Dashboard({ result, config, updating, onConfigChange, onReset, o
   const patterns = (result.patterns ?? []).filter((p) => p.sheet === meta?.name);
   const scanSeconds = Object.values(result.timings).reduce((a, b) => a + b, 0) / 1000;
   const reviewed = rows.filter((r) => (reviews[r.key]?.status ?? 'open') !== 'open').length;
+
+  const reviewRow = useCallback(
+    (key: string, patch: { status?: ReviewStatus; note?: string }) => {
+      updateReview(key, patch);
+      if (patch.status) track('row_reviewed', { status: patch.status });
+    },
+    [updateReview],
+  );
+  const changeConfig = useCallback(
+    (patch: ConfigPatch) => {
+      onConfigChange(patch);
+      track('sensitivity_changed');
+    },
+    [onConfigChange],
+  );
 
   const exportExcel = async () => {
     setExcelState('working');
@@ -119,7 +135,10 @@ export function Dashboard({ result, config, updating, onConfigChange, onReset, o
             </label>
           )}
           <button
-            onClick={() => setReportOpen(true)}
+            onClick={() => {
+              setReportOpen(true);
+              track('report_opened');
+            }}
             className="rounded-full bg-paper px-4 py-2 text-sm font-semibold text-ink hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
           >
             Audit report (PDF)
@@ -192,7 +211,10 @@ export function Dashboard({ result, config, updating, onConfigChange, onReset, o
                       <p className="mt-1 text-sm leading-relaxed text-paper/75">{p.detail}</p>
                     </div>
                     <button
-                      onClick={() => setPresetQuery(p.filter)}
+                      onClick={() => {
+                        setPresetQuery(p.filter);
+                        track('pattern_opened');
+                      }}
                       className="shrink-0 rounded-full bg-paper px-4 py-2 text-sm font-medium text-ink hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
                     >
                       Show these {fmtInt(p.rowCount)} rows
@@ -207,7 +229,7 @@ export function Dashboard({ result, config, updating, onConfigChange, onReset, o
                 initialQuery={presetQuery}
                 rows={rows}
                 getReview={getReview}
-                onReview={updateReview}
+                onReview={reviewRow}
                 onOpen={openRow}
                 selectedKey={openKey}
               />
@@ -218,7 +240,7 @@ export function Dashboard({ result, config, updating, onConfigChange, onReset, o
         </main>
 
         <aside className="lg:sticky lg:top-8 lg:self-start">
-          <SensitivityPanel config={config} onChange={onConfigChange} updating={updating} />
+          <SensitivityPanel config={config} onChange={changeConfig} updating={updating} />
           <p className="mt-10 border-t border-graphite/70 pt-4 text-xs leading-relaxed text-haze">
             Your workbook was analysed on this device. Nothing was uploaded.
           </p>
@@ -232,7 +254,7 @@ export function Dashboard({ result, config, updating, onConfigChange, onReset, o
           row={openRowData}
           headers={sheets.find((s) => s.name === openRowData.sheet)?.headers ?? meta.headers}
           review={getReview(openRowData.key)}
-          onReview={(patch) => updateReview(openRowData.key, patch)}
+          onReview={(patch) => reviewRow(openRowData.key, patch)}
           onClose={() => setOpenKey(null)}
           onPrev={pos > 0 ? () => setOpenKey(navKeys[pos - 1]) : undefined}
           onNext={pos >= 0 && pos < navKeys.length - 1 ? () => setOpenKey(navKeys[pos + 1]) : undefined}
