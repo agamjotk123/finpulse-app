@@ -2,61 +2,56 @@
 
 import { useState } from 'react';
 
-type Props = {
-  onFile: (file: File) => void;
-};
-
-// These files must be in your project's /public folder so the browser can fetch them.
 const SAMPLES = [
-  { file: 'sample-ledger.xlsx', label: 'Sample ledger', note: 'Four planted problems' },
-  { file: 'sample-expenses.xlsx', label: 'Sample expenses', note: 'Split claims under a limit' },
+  {
+    file: 'sample-expenses.xlsx',
+    title: 'Expense claims',
+    blurb: '3,000 claims. One employee keeps splitting claims to stay under an approval limit.',
+  },
+  {
+    file: 'sample-ledger.xlsx',
+    title: 'Supplier ledger',
+    blurb: '2,400 invoices with a wrong VAT rate, a duplicate payment and an inflated amount.',
+  },
 ];
 
-const XLSX_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-
-export function SampleFiles({ onFile }: Props) {
+/** One-click demo data, so visitors from LinkedIn can try Benfora without their own files. */
+export function SampleFiles({ onFile, disabled }: { onFile: (f: File) => void; disabled?: boolean }) {
   const [loading, setLoading] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(false);
 
-  async function load(name: string) {
+  const load = async (name: string) => {
     setLoading(name);
-    setError(null);
+    setError(false);
     try {
-      const res = await fetch(`/${name}`);
-      if (!res.ok) throw new Error('missing');
+      const res = await fetch(`/samples/${name}`);
+      if (!res.ok) throw new Error(String(res.status));
       const blob = await res.blob();
-      onFile(new File([blob], name, { type: XLSX_TYPE }));
+      onFile(new File([blob], name, { type: blob.type }));
     } catch {
-      setError('Couldn’t load that sample. Check the file is in the public folder.');
+      setError(true);
     } finally {
       setLoading(null);
     }
-  }
+  };
 
   return (
-    <div className="mt-8">
-      <p className="text-sm text-haze">No file handy? Try a sample.</p>
-      <div className="mt-3 flex flex-wrap gap-3">
+    <div className="mt-10">
+      <p className="text-sm text-haze">No spreadsheet to hand? Try one of these. They contain made-up data with hidden problems.</p>
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
         {SAMPLES.map((s) => (
           <button
             key={s.file}
-            type="button"
-            disabled={loading !== null}
             onClick={() => load(s.file)}
-            className="rounded-xl border border-graphite px-4 py-3 text-left hover:border-paper/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse disabled:opacity-50"
+            disabled={disabled || loading !== null}
+            className="rounded-2xl border border-graphite/80 px-5 py-4 text-left transition-colors hover:border-paper/60 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse"
           >
-            <span className="block text-sm font-medium text-paper">
-              {loading === s.file ? 'Loading…' : s.label}
-            </span>
-            <span className="block text-xs text-haze">{s.note}</span>
+            <span className="block font-semibold text-paper">{loading === s.file ? 'Opening…' : s.title}</span>
+            <span className="mt-1 block text-sm leading-relaxed text-haze">{s.blurb}</span>
           </button>
         ))}
       </div>
-      {error && (
-        <p role="alert" className="mt-3 text-sm text-bolt">
-          {error}
-        </p>
-      )}
+      {error && <p className="mt-3 text-sm text-bolt">The sample couldn’t be loaded. Refresh the page and try again.</p>}
     </div>
   );
 }

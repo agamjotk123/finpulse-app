@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { BrandMark } from '@/components/brand/BrandMark';
 import { Dashboard } from '@/components/dashboard/Dashboard';
 import { AnalysisProgress } from '@/components/upload/AnalysisProgress';
@@ -80,14 +79,6 @@ export default function HomePage() {
         )}
         <footer className="mt-24 flex flex-wrap items-center justify-between gap-4 border-t border-graphite/60 pt-6 text-sm text-haze">
           <p className="max-w-xl">Your files are analysed in your browser and never uploaded. We count anonymous usage, like how many scans are run, but never see your data.</p>
-          <p className="flex gap-4">
-            <Link href="/about" className="text-paper underline-offset-4 hover:underline">
-              About us
-            </Link>
-            <Link href="/feedback" className="text-paper underline-offset-4 hover:underline">
-              Feedback
-            </Link>
-          </p>
           <p>
             Built by {SITE.ownerName}
             {contact && (

@@ -4,9 +4,9 @@
  */
 export const SITE = {
   name: 'Benfora',
-  ownerName: 'Agamjot Kaur',
-  contactEmail: 'agamkalsi07@gmail.com', // e.g. 'amrit@example.com'
-  linkedinUrl: 'www.linkedin.com/in/agamjot-kaur-190261335', // e.g. 'https://www.linkedin.com/in/your-profile'
+  ownerName: 'Agamjot',
+  contactEmail: '', // e.g. 'amrit@example.com'
+  linkedinUrl: '', // e.g. 'https://www.linkedin.com/in/your-profile'
   tagline: 'Find the numbers that don’t belong.',
   description:
     'Benfora scans financial spreadsheets for errors, duplicates and fraud patterns in seconds, and explains every flag in plain English. Files never leave your browser.',
