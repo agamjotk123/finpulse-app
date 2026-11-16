@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { BrandMark } from '@/components/brand/BrandMark';
+import { SiteNav } from '@/components/SiteNav';
 import { SITE } from '@/lib/site';
 
 /**
@@ -31,11 +32,7 @@ export function SubPageShell({ children, title, heading, subtitle, description, 
             <BrandMark size={38} />
             <span className="text-lg font-semibold tracking-tight">{SITE.name}</span>
           </Link>
-          <nav className="ml-auto flex items-center gap-5 text-sm text-haze">
-            <Link href="/" className="hover:text-paper">Scan a file</Link>
-            <Link href="/about" className="hover:text-paper">About</Link>
-            <Link href="/feedback" className="hover:text-paper">Feedback</Link>
-          </nav>
+          <SiteNav />
         </header>
 
         {(eyebrow || head || sub) && (
