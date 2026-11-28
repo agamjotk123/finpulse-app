@@ -1,19 +1,11 @@
 {
-  "id": "/",
   "name": "Benfora",
   "short_name": "Benfora",
   "description": "Find the numbers that don't belong. Financial anomaly detection that runs in your browser.",
   "start_url": "/",
-  "scope": "/",
   "display": "standalone",
-  "orientation": "any",
   "background_color": "#04050A",
   "theme_color": "#04050A",
-  "categories": [
-    "finance",
-    "business",
-    "productivity"
-  ],
   "icons": [
     {
       "src": "/icons/icon-192.png",

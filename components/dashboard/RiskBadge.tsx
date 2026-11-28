@@ -1,5 +1,3 @@
-// Small coloured risk score with a fill bar (0-100), used in the table and drawer.
-
 import type { Severity } from '@/lib/engine/types';
 import { SEVERITY_COLOR, SEVERITY_LABEL } from '@/lib/ui/severity';
 

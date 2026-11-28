@@ -1,6 +1,3 @@
-// ANONYMOUS USAGE TRACKING (PostHog). Lists the events we count and the track() helper.
-// RULE: only event names and rough sizes are sent, never file names, values or messages.
-
 /**
  * Anonymous product analytics.
  *
@@ -13,7 +10,7 @@
  */
 import posthog from 'posthog-js';
 
-const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;  // set in Vercel > Environment Variables
+const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com';
 
 let ready = false;
@@ -22,11 +19,11 @@ export function initAnalytics() {
   if (ready || !KEY || typeof window === 'undefined') return;
   posthog.init(KEY, {
     api_host: HOST,
-    persistence: 'memory',  // no cookies
+    persistence: 'memory',
     autocapture: false,
     capture_pageview: false, // page views are counted by Vercel Analytics
     capture_pageleave: false,
-    disable_session_recording: true,  // never record screens: they could show financial data
+    disable_session_recording: true,
     disable_surveys: true,
     person_profiles: 'identified_only',
   });
@@ -53,10 +50,7 @@ export type AnalyticsEvent =
   | 'row_reviewed'
   | 'sensitivity_changed'
   | 'pattern_opened'
-  | 'contact_clicked'
-  | 'app_install_clicked'
-  | 'app_installed'
-  | 'feedback_sent';
+  | 'contact_clicked';
 
 /** Coarse size buckets so no exact figures from a user's file are ever sent. */
 export function bucket(n: number): string {

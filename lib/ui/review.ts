@@ -1,5 +1,3 @@
-// The review statuses (To review, Confirmed issue, Explained, False alarm) and their labels.
-
 /** Reviewer workflow. Step 3's audit report reads these alongside the findings. */
 export type ReviewStatus = 'open' | 'confirmed' | 'explained' | 'dismissed';
 

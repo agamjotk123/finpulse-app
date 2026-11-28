@@ -1,5 +1,3 @@
-// Dashboard helpers: finds the main money column and totals the money in high-risk rows.
-
 import { coerceNumber } from '@/lib/engine/coerce';
 import type { AnalysisResult, RowRisk } from '@/lib/engine/types';
 

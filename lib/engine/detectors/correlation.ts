@@ -1,5 +1,3 @@
-// MODEL 6: Relationship breaks, e.g. VAT that isn't about 5% of Net.
-
 import { finite, fmt, robustScale, strength } from '../stats';
 import { analyzableColumns, makeFinding, type Detector } from './shared';
 import type { CorrelationMatrix, Finding, ParsedSheet } from '../types';

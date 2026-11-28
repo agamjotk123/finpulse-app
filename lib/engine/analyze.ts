@@ -1,8 +1,3 @@
-// THE MAIN ENGINE. Start here to understand how Benfora finds problems.
-// 1) runs every detection model on every sheet, 2) runs Benford's Law, 3) combines all findings
-// into one 0-100 risk score per row (ensemble.ts), 4) builds what the dashboard and exports need.
-// TO ADD A MODEL: create a file in detectors/ and add it to the DETECTORS list below.
-
 import { benfordAnalysis } from './detectors/benford';
 import { correlationMatrix, detectCorrelation } from './detectors/correlation';
 import { detectDuplicates } from './detectors/duplicate';
@@ -48,14 +43,14 @@ const DETECTORS: Record<DetectorId, Detector> = {
 };
 const ORDER = Object.keys(DETECTORS) as DetectorId[];
 
-const MAX_SERIES_PER_SHEET = 12;  // max columns charted in Column explorer
-const MAX_POINTS = 1_500;  // max dots per chart, so charts stay fast
+const MAX_SERIES_PER_SHEET = 12;
+const MAX_POINTS = 1_500;
 
 export type ProgressFn = (label: string, pct: number) => void;
 
 export function analyzeWorkbook(wb: ParsedWorkbook, cfg: AnalysisConfig, onProgress?: ProgressFn): AnalysisResult {
   const sheets = wb.sheets.filter((s) => cfg.sheets.length === 0 || cfg.sheets.indexOf(s.name) !== -1);
-  const enabled = ORDER.filter((id) => cfg.modules[id]);  // models switched on in Sensitivity
+  const enabled = ORDER.filter((id) => cfg.modules[id]);
   const totalSteps = Math.max(1, sheets.length * (enabled.length + (cfg.modules.benford ? 1 : 0)));
   let step = 0;
   const tick = (label: string) => onProgress?.(label, Math.round((++step / totalSteps) * 100));
@@ -94,7 +89,7 @@ export function analyzeWorkbook(wb: ParsedWorkbook, cfg: AnalysisConfig, onProgr
   const t0 = performance.now();
   const sheetMap = new Map<string, ParsedSheet>();
   for (let i = 0; i < sheets.length; i++) sheetMap.set(sheets[i].name, sheets[i]);
-  const scored = scoreRows(findings, sheetMap, cfg, groupColumns(sheets, correlations, cfg));  // turn findings into one risk score per row
+  const scored = scoreRows(findings, sheetMap, cfg, groupColumns(sheets, correlations, cfg));
   timings.ensemble = performance.now() - t0;
 
   const bySeverity: Record<Severity, number> = { critical: 0, high: 0, medium: 0, low: 0 };
@@ -150,7 +145,7 @@ export function analyzeWorkbook(wb: ParsedWorkbook, cfg: AnalysisConfig, onProgr
   };
 }
 
-const LOCKSTEP_R = 0.9;  // columns this correlated (e.g. Net/VAT/Total) count as one signal
+const LOCKSTEP_R = 0.9;
 
 /** Union-find over |r| ≥ 0.9 so derived columns (Net, VAT, Total) count as one signal. */
 function groupColumns(sheets: ParsedSheet[], computed: CorrelationMatrix[], cfg: AnalysisConfig): ColumnGroups {

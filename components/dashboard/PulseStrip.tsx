@@ -1,9 +1,5 @@
 'use client';
 
-// RISK TRACE: the heart-monitor line across the whole sheet.
-// Each spike is a flagged row, its height is the risk score, and high/critical spikes are red.
-// Click a spike to open that row.
-
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { RowRisk } from '@/lib/engine/types';
 import { fmtInt } from '@/lib/ui/format';
@@ -145,7 +141,7 @@ export function PulseStrip({ rows, rowCount, firstExcelRow, selectedKey, onSelec
 
       {hover && (
         <div
-          className="pointer-events-none absolute top-0 z-10 -translate-x-1/2 whitespace-nowrap rounded-md bg-paper px-2.5 py-1.5 text-xs font-medium text-ink shadow-lg"
+          className="pointer-events-none absolute top-0 z-10 -translate-x-1/2 whitespace-nowrap rounded-2xl bg-paper px-2.5 py-1.5 text-xs font-medium text-ink shadow-lg"
           style={{ left: `${((hover.index + 0.5) * binWidth * 100) / W}%` }}
         >
           Row {hover.excelRow}, risk {hover.risk}

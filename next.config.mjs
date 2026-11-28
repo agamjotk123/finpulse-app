@@ -1,5 +1,3 @@
-// NEXT.JS BUILD SETTINGS.
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,

@@ -1,5 +1,3 @@
-// MODEL 5: Seasonality. Is this amount normal for its month or day of the week?
-
 import { chooseTransform, finite, fmt, materiality, median, robustScale, rollingMedian, strength } from '../stats';
 import { analyzableColumns, makeFinding, type Detector } from './shared';
 import type { Finding } from '../types';

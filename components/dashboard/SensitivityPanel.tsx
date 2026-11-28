@@ -1,8 +1,5 @@
 'use client';
 
-// SENSITIVITY PANEL (right side of the dashboard): presets, minimum risk slider,
-// per-model sliders and on/off switches. Changes re-score the file instantly.
-
 import type { ConfigPatch } from '@/lib/engine/config';
 import { DETECTOR_META, type AnalysisConfig, type AnalysisModule, type DetectorId } from '@/lib/engine/types';
 
@@ -15,7 +12,6 @@ interface Props {
 type PresetId = 'conservative' | 'balanced' | 'thorough';
 
 /** Plain-language presets. Most users never need the individual thresholds. */
-// The three presets. Change these numbers to make each preset stricter or looser.
 const PRESETS: Record<PresetId, { label: string; hint: string; patch: ConfigPatch }> = {
   conservative: {
     label: 'Strict',
@@ -92,7 +88,7 @@ export function SensitivityPanel({ config, onChange, updating }: Props) {
           <h2 className="text-base font-semibold text-paper">Sensitivity</h2>
           <span className="text-xs text-haze" aria-live="polite">{updating ? 'Updating…' : ''}</span>
         </div>
-        <div className="mt-3 grid grid-cols-3 gap-1.5 rounded-xl border border-graphite p-1" role="radiogroup" aria-label="Sensitivity preset">
+        <div className="mt-3 grid grid-cols-3 gap-1.5 rounded-full border border-white/10 bg-white/[0.04] p-1" role="radiogroup" aria-label="Sensitivity preset">
           {(Object.keys(PRESETS) as PresetId[]).map((id) => (
             <button
               key={id}
@@ -100,7 +96,7 @@ export function SensitivityPanel({ config, onChange, updating }: Props) {
               aria-checked={preset === id}
               onClick={() => onChange(PRESETS[id].patch)}
               className={[
-                'rounded-lg px-2 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse',
+                'rounded-2xl px-2 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse',
                 preset === id ? 'bg-paper font-medium text-ink' : 'text-paper/80 hover:bg-white/[0.06]',
               ].join(' ')}
             >
@@ -142,7 +138,7 @@ export function SensitivityPanel({ config, onChange, updating }: Props) {
             const description = m === 'benford' ? 'Checks whether amounts have natural leading digits.' : DETECTOR_META[m].description;
             return (
               <li key={m}>
-                <label className="flex cursor-pointer items-start gap-3 rounded-lg px-2 py-2 hover:bg-white/[0.04]">
+                <label className="flex cursor-pointer items-start gap-3 rounded-2xl px-2 py-2 hover:bg-white/[0.04]">
                   <input
                     type="checkbox"
                     checked={config.modules[m]}

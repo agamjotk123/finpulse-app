@@ -1,8 +1,5 @@
 'use client';
 
-// REVIEW QUEUE: the table of flagged rows, with search, severity filters, paging,
-// and a status dropdown per row (saved by hooks/useReviews.ts).
-
 import { useMemo, useState } from 'react';
 import { DETECTOR_COUNT, DETECTOR_META, type RowRisk, type Severity } from '@/lib/engine/types';
 import { fmtCell, fmtInt } from '@/lib/ui/format';
@@ -19,7 +16,7 @@ interface Props {
   initialQuery?: string;
 }
 
-const PAGE = 25;  // rows per page
+const PAGE = 25;
 type StatusFilter = ReviewStatus | 'all';
 
 export function ReviewTable({ rows, getReview, onReview, onOpen, selectedKey, initialQuery = '' }: Props) {
@@ -79,7 +76,7 @@ export function ReviewTable({ rows, getReview, onReview, onOpen, selectedKey, in
             value={query}
             onChange={(e) => { setQuery(e.target.value); setPage(0); }}
             placeholder="Search by row number, vendor, amount or reason"
-            className="w-full rounded-lg border border-graphite bg-transparent px-3.5 py-2.5 text-sm text-paper placeholder:text-haze focus:border-pulse focus:outline-none"
+            className="w-full rounded-2xl border border-graphite bg-transparent px-3.5 py-2.5 text-sm text-paper placeholder:text-haze focus:border-pulse focus:outline-none"
           />
         </label>
         <label className="flex items-center gap-2 text-sm text-haze">
@@ -87,7 +84,7 @@ export function ReviewTable({ rows, getReview, onReview, onOpen, selectedKey, in
           <select
             value={status}
             onChange={(e) => { setStatus(e.target.value as StatusFilter); setPage(0); }}
-            className="rounded-lg border border-graphite bg-ink px-3 py-2.5 text-sm text-paper focus:border-pulse focus:outline-none"
+            className="rounded-full border border-white/10 bg-surface px-4 py-2.5 text-sm text-paper focus:border-pulse focus:outline-none"
           >
             <option value="all">Any</option>
             {REVIEW_STATUSES.map((s) => (
@@ -143,7 +140,7 @@ export function ReviewTable({ rows, getReview, onReview, onOpen, selectedKey, in
                       aria-label={`Status for row ${r.excelRow}`}
                       value={review.status}
                       onChange={(e) => onReview(r.key, { status: e.target.value as ReviewStatus })}
-                      className="rounded-md border border-graphite bg-ink px-2 py-1.5 text-sm text-paper focus:border-pulse focus:outline-none"
+                      className="rounded-full border border-white/10 bg-surface px-3 py-1.5 text-sm text-paper focus:border-pulse focus:outline-none"
                     >
                       {REVIEW_STATUSES.map((s) => (
                         <option key={s} value={s}>{REVIEW_LABEL[s]}</option>

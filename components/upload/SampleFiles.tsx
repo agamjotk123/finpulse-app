@@ -1,8 +1,5 @@
 'use client';
 
-// "TRY A SAMPLE" BUTTONS: load demo spreadsheets so visitors can try Benfora
-// without their own data. The files live in public/samples/.
-
 import { useState } from 'react';
 
 type Props = {
@@ -25,7 +22,7 @@ export function SampleFiles({ onFile }: Props) {
     setLoading(name);
     setError(null);
     try {
-      const res = await fetch(`/samples/${name}`);  // download the sample from public/samples
+      const res = await fetch(`/${name}`);
       if (!res.ok) throw new Error('missing');
       const blob = await res.blob();
       onFile(new File([blob], name, { type: XLSX_TYPE }));
@@ -37,16 +34,16 @@ export function SampleFiles({ onFile }: Props) {
   }
 
   return (
-    <div className="mt-8">
+    <div className="mt-10 text-center">
       <p className="text-sm text-haze">No file handy? Try a sample.</p>
-      <div className="mt-3 flex flex-wrap gap-3">
+      <div className="mt-4 flex flex-wrap justify-center gap-3">
         {SAMPLES.map((s) => (
           <button
             key={s.file}
             type="button"
             disabled={loading !== null}
             onClick={() => load(s.file)}
-            className="rounded-xl border border-graphite px-4 py-3 text-left hover:border-paper/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse disabled:opacity-50"
+            className="fp-card rounded-full px-6 py-3 text-left transition-colors hover:border-pulse/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse disabled:opacity-50"
           >
             <span className="block text-sm font-medium text-paper">
               {loading === s.file ? 'Loading…' : s.label}

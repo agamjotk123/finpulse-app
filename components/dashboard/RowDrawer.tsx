@@ -1,8 +1,5 @@
 'use client';
 
-// ROW DETAILS DRAWER: slides in from the right when a row is clicked.
-// Shows why it was flagged, the full record (suspicious cells in red), and the review status + note.
-
 import { useEffect, useRef } from 'react';
 import { DETECTOR_COUNT, DETECTOR_META, type RowRisk } from '@/lib/engine/types';
 import { fmtCell, fmtNum } from '@/lib/ui/format';
@@ -46,19 +43,19 @@ export function RowDrawer({ row, headers, review, onReview, onClose, onPrev, onN
   return (
     <div className="fixed inset-0 z-40 flex justify-end" role="dialog" aria-modal="true" aria-label={`Row ${row.excelRow} details`}>
       <button className="absolute inset-0 bg-black/60" aria-label="Close details" onClick={onClose} tabIndex={-1} />
-      <aside className="relative flex h-full w-full max-w-xl flex-col overflow-y-auto border-l border-graphite bg-ink shadow-2xl">
-        <header className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-graphite/70 bg-ink/95 px-6 py-4 backdrop-blur">
+      <aside className="relative flex h-full w-full max-w-xl flex-col overflow-y-auto rounded-l-[2rem] border-l border-white/10 bg-surface shadow-2xl">
+        <header className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-graphite/70 bg-surface/95 px-6 py-4 backdrop-blur">
           <div className="text-sm text-haze">
             {position ? `${position.index + 1} of ${position.total}` : row.sheet}
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={onPrev} disabled={!onPrev} className="rounded-md border border-graphite px-3 py-1.5 text-sm text-paper disabled:opacity-30 hover:border-paper/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse">
+            <button onClick={onPrev} disabled={!onPrev} className="rounded-xl border border-graphite px-3 py-1.5 text-sm text-paper disabled:opacity-30 hover:border-paper/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse">
               Previous
             </button>
-            <button onClick={onNext} disabled={!onNext} className="rounded-md border border-graphite px-3 py-1.5 text-sm text-paper disabled:opacity-30 hover:border-paper/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse">
+            <button onClick={onNext} disabled={!onNext} className="rounded-xl border border-graphite px-3 py-1.5 text-sm text-paper disabled:opacity-30 hover:border-paper/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse">
               Next
             </button>
-            <button ref={closeRef} onClick={onClose} className="ml-1 rounded-md px-3 py-1.5 text-sm text-paper hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse">
+            <button ref={closeRef} onClick={onClose} className="ml-1 rounded-xl px-3 py-1.5 text-sm text-paper hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse">
               Close
             </button>
           </div>
@@ -119,7 +116,7 @@ export function RowDrawer({ row, headers, review, onReview, onClose, onPrev, onN
                   aria-checked={review.status === s}
                   onClick={() => onReview({ status: s })}
                   className={[
-                    'rounded-lg border px-3 py-2.5 text-left text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse',
+                    'rounded-2xl border px-3 py-2.5 text-left text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse',
                     review.status === s ? 'border-paper bg-paper font-medium text-ink' : 'border-graphite text-paper hover:border-paper/60',
                   ].join(' ')}
                 >
@@ -137,7 +134,7 @@ export function RowDrawer({ row, headers, review, onReview, onClose, onPrev, onN
               onChange={(e) => onReview({ note: e.target.value })}
               rows={3}
               placeholder="e.g. Approved by CFO, see email of 3 March"
-              className="mt-1.5 w-full rounded-lg border border-graphite bg-transparent px-3.5 py-2.5 text-sm text-paper placeholder:text-haze/70 focus:border-pulse focus:outline-none"
+              className="mt-1.5 w-full rounded-2xl border border-graphite bg-transparent px-3.5 py-2.5 text-sm text-paper placeholder:text-haze/70 focus:border-pulse focus:outline-none"
             />
             <p className="mt-1.5 text-xs text-haze">Saved automatically, only in this browser. Use the arrow keys to move between rows.</p>
           </section>

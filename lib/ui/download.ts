@@ -1,5 +1,3 @@
-// Saves a generated file (e.g. the Excel export) to the visitor's computer.
-
 /** Saves a Blob as a file. Works in every modern browser without a server round-trip. */
 export function downloadBlob(blob: Blob, fileName: string) {
   const url = URL.createObjectURL(blob);

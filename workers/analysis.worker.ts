@@ -1,7 +1,3 @@
-// BACKGROUND WORKER: where parsing and analysis actually run, off the main page,
-// so the screen stays smooth even with huge files. Keeps the file in memory so
-// changing settings re-scores instantly. Builds the Excel export too.
-
 /**
  * Benfora analysis worker.
  * Parsing and every statistical model run here, off the UI thread and entirely inside

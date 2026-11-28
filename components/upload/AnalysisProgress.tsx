@@ -1,7 +1,5 @@
 'use client';
 
-// PROGRESS BAR shown while a file is being read and analysed.
-
 type Props = {
   progress: unknown;
   fileName?: string;
@@ -38,12 +36,12 @@ export function AnalysisProgress({ progress, fileName }: Props) {
   const pct = percent === null ? null : Math.max(0, Math.min(100, Math.round(percent)));
 
   return (
-    <div role="status" aria-live="polite" className="rounded-2xl border border-graphite/60 p-8">
+    <div role="status" aria-live="polite" className="fp-card rounded-[2.25rem] p-10 text-center">
       <p className="text-xl font-semibold tracking-tight">Scanning{fileName ? ` ${fileName}` : ''}</p>
       <p className="mt-2 text-sm text-haze">{label ?? 'Checking every row. This stays in your browser.'}</p>
-      <div className="mt-6 h-2 overflow-hidden rounded-full bg-graphite/60">
+      <div className="mt-6 h-2 overflow-hidden rounded-full bg-white/10">
         <div
-          className={`h-full rounded-full bg-pulse transition-[width] duration-300 ${pct === null ? 'w-1/3 animate-pulse' : ''}`}
+          className={`h-full rounded-full bg-gradient-to-r from-pulse to-[#6A86FF] shadow-[0_0_12px_rgba(26,60,255,0.7)] transition-[width] duration-300 ${pct === null ? 'w-1/3 animate-pulse' : ''}`}
           style={pct === null ? undefined : { width: `${pct}%` }}
         />
       </div>

@@ -1,5 +1,3 @@
-// The messages sent between the page and the background worker (start, progress, result, export, error).
-
 import type { ConfigPatch } from './config';
 import type { AnalysisConfig, AnalysisResult } from './types';
 import type { Reviews } from '@/lib/ui/review';

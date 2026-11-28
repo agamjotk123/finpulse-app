@@ -1,8 +1,5 @@
 'use client';
 
-// FORENSICS TAB: how many signals each model found, Benford's Law charts,
-// and the map of which columns move together.
-
 import { DETECTOR_META, type AnalysisResult, type BenfordConformity, type BenfordResult, type DetectorId } from '@/lib/engine/types';
 import { fmtInt } from '@/lib/ui/format';
 

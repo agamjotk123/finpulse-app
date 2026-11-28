@@ -1,7 +1,5 @@
 'use client';
 
-// HEADLINE NUMBERS under the risk trace: rows scanned, flagged, critical, money at risk.
-
 import { fmtInt, fmtNum } from '@/lib/ui/format';
 
 interface Props {
@@ -28,11 +26,11 @@ export function KpiBar({ rowsScanned, flagged, critical, amountAtRisk, amountCol
   return (
     <dl className="grid grid-cols-2 gap-x-8 gap-y-6 lg:grid-cols-4">
       {items.map((it) => (
-        <div key={it.label} className="border-t border-graphite/70 pt-4">
-          <dt className="text-sm text-haze">{it.label}</dt>
+        <div key={it.label} className="fp-card p-5">
+          <dt className="text-xs font-medium uppercase tracking-wider text-haze">{it.label}</dt>
           <dd
             className={[
-              'mt-1 text-4xl font-semibold tabular-nums tracking-tight [font-stretch:118%] md:text-5xl',
+              'mt-2 text-4xl font-semibold tabular-nums tracking-tighter md:text-5xl',
               it.alarm ? 'text-bolt' : 'text-paper',
             ].join(' ')}
           >

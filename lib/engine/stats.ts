@@ -1,5 +1,3 @@
-// MATHS HELPERS used by every detection model (averages, medians, percentiles, spread...).
-
 /** Allocation-light statistics over Float64Array. NaN always means "missing". */
 
 export function finite(values: ArrayLike<number>): Float64Array {

@@ -1,21 +1,119 @@
-/*
- * GLOBAL STYLES: loaded on every page.
- * Sets up Tailwind, the risk-trace sweep animation, and the print rules that
- * turn the audit report into a clean A4 PDF ("Save as PDF").
- */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --fp-black: #05060a;
+  --fp-ink: #0a0d18;
+  --fp-blue: #1a3cff;
+  --fp-blue-bright: #4d6bff;
+  --fp-red: #ff2323;
+  --fp-red-soft: #ff5a5a;
+}
 
 html {
   color-scheme: dark;
 }
 
 body {
-  background: #04050a;
-  color: #ffffff;
+  min-height: 100vh;
+  background-color: var(--fp-black);
+  /* Deep black base, electric blue glow up top, red glow in the corners. */
+  background-image:
+    radial-gradient(64rem 36rem at 50% -12%, rgba(26, 60, 255, 0.42), transparent 70%),
+    radial-gradient(42rem 30rem at 0% 100%, rgba(26, 60, 255, 0.22), transparent 70%),
+    radial-gradient(38rem 26rem at 100% 0%, rgba(255, 35, 35, 0.18), transparent 70%),
+    radial-gradient(34rem 24rem at 100% 100%, rgba(255, 35, 35, 0.10), transparent 70%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #f2f4fb;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv11', 'ss01', 'tnum';
+}
+
+::selection {
+  background: rgba(255, 35, 35, 0.5);
+  color: #ffffff;
+}
+
+/* Slim blue scrollbars. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1a3cff #05060a;
+}
+
+/* ---------- Reusable surfaces ---------- */
+
+/* Glassy black card with a blue-to-red hairline border and soft glow. */
+.fp-card {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(20, 28, 60, 0.55), rgba(8, 10, 20, 0.85));
+  border: 1px solid transparent;
+  border-radius: 2rem;
+  box-shadow:
+    0 24px 60px -28px rgba(0, 0, 0, 0.95),
+    0 0 40px -18px rgba(26, 60, 255, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Gradient hairline border drawn with a mask so the corners stay perfectly round. */
+.fp-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(77, 107, 255, 0.75),
+    rgba(255, 255, 255, 0.06) 45%,
+    rgba(255, 35, 35, 0.6)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.fp-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 28px 70px -28px rgba(0, 0, 0, 0.95),
+    0 0 55px -14px rgba(26, 60, 255, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.fp-gradient-text {
+  background: linear-gradient(90deg, #ffffff 0%, #8fa3ff 45%, #ff6b6b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Pill buttons: blue primary, red accent. */
+.fp-btn {
+  border-radius: 9999px;
+  background: linear-gradient(135deg, var(--fp-blue), var(--fp-blue-bright));
+  color: #ffffff;
+  box-shadow: 0 10px 30px -10px rgba(26, 60, 255, 0.8);
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.fp-btn:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+.fp-btn-red {
+  background: linear-gradient(135deg, #d91414, var(--fp-red-soft));
+  box-shadow: 0 10px 30px -10px rgba(255, 35, 35, 0.8);
 }
 
 /* Risk trace: a single sweep-in on load, like a heart monitor drawing its trace. */
@@ -36,6 +134,11 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .fp-reveal {
     animation: none;
+  }
+
+  .fp-card,
+  .fp-btn {
+    transition: none;
   }
 }
 
@@ -70,6 +173,8 @@ body.fp-report-open {
   html,
   body {
     background: #ffffff !important;
+    background-image: none !important;
+    background-attachment: scroll !important;
     color-scheme: light;
   }
 

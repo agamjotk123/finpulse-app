@@ -1,7 +1,3 @@
-// READS AN UPLOADED SPREADSHEET into a clean table: finds the header row, works out what
-// each column is (amount, date, text, ID), converts accounting formats to numbers,
-// and remembers real Excel row numbers so every flag points to the right row.
-
 import * as XLSX from 'xlsx';
 import type {
   CellValue,

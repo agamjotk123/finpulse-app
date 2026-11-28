@@ -1,5 +1,3 @@
-// Turns text like '$1,234.50', '(500)', 'AED 1,000' or '12%' into real numbers.
-
 /** Kept separate from parse.ts so the UI can use it without bundling SheetJS. */
 
 const NUMERIC_BODY = /^(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i;

@@ -1,5 +1,3 @@
-// DEFAULT SETTINGS for the analysis. The Sensitivity panel starts from these values.
-
 import type { AnalysisConfig } from './types';
 
 export const DEFAULT_CONFIG: AnalysisConfig = {
@@ -14,15 +12,15 @@ export const DEFAULT_CONFIG: AnalysisConfig = {
     threshold: true,
     benford: true,
   },
-  zThreshold: 3,  // how many standard deviations counts as unusual
-  modZThreshold: 3.5,  // same idea for the robust (median-based) test
-  iqrMultiplier: 1.5,  // width of the IQR fences (1.5 is the textbook value)
+  zThreshold: 3,
+  modZThreshold: 3.5,
+  iqrMultiplier: 1.5,
   // Fixed seed => identical results on every run. Auditors need reproducibility.
   iforest: { trees: 100, sampleSize: 256, threshold: 0.62, seed: 42 },
   correlation: { minAbsR: 0.8, residualThreshold: 3.5, maxColumns: 40 },
   seasonal: { residualThreshold: 3.5 },
-  minRiskScore: 35,  // rows scoring below this are hidden
-  maxRows: 200_000,  // rows read per sheet (plan limit)
+  minRiskScore: 35,
+  maxRows: 200_000,
   maxColumns: 60,
   maxFlaggedRows: 5_000,
   sheets: [],

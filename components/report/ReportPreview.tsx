@@ -1,8 +1,5 @@
 'use client';
 
-// REPORT PREVIEW: shows the report on a white A4 page with a "Save as PDF" button
-// that opens the browser's print dialog.
-
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { AnalysisResult } from '@/lib/engine/types';
@@ -70,7 +67,7 @@ export function ReportPreview({ result, reviews, onClose }: Props) {
               value={preparedBy}
               onChange={(e) => setPreparedBy(e.target.value)}
               placeholder="Your name and company"
-              className="min-w-0 flex-1 rounded-lg border border-graphite bg-transparent px-3 py-2 text-sm text-paper placeholder:text-haze/70 focus:border-pulse focus:outline-none"
+              className="min-w-0 flex-1 rounded-2xl border border-graphite bg-transparent px-3 py-2 text-sm text-paper placeholder:text-haze/70 focus:border-pulse focus:outline-none"
             />
           </label>
           <button

@@ -1,5 +1,3 @@
-// MODEL 8: Approval-limit clustering: many amounts just under limits like 5,000, and who's behind them.
-
 import { finite, fmt, strength } from '../stats';
 import { analyzableColumns, makeFinding, type Detector } from './shared';
 import type { Finding, ParsedSheet, Pattern } from '../types';
