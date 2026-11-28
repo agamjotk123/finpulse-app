@@ -1,3 +1,5 @@
+// BENFORD'S LAW: checks whether amounts start with 1, 2, 3... as often as real-world numbers do.
+
 import { quantileSorted } from '../stats';
 import { analyzableColumns } from './shared';
 import type { AnalysisConfig, BenfordConformity, BenfordResult, ParsedSheet } from '../types';

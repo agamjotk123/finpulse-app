@@ -1,3 +1,6 @@
+// DESIGN SETTINGS for Tailwind CSS: brand colours, fonts and shadows used in class names
+// like bg-ink, text-pulse, border-graphite.
+
 import type { Config } from 'tailwindcss';
 
 /** Brand tokens taken directly from the Benfora logo. Merge into your existing config. */

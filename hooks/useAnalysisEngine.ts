@@ -1,5 +1,9 @@
 'use client';
 
+// THE BRIDGE between the screens and the analysis engine.
+// Pages call analyzeFile(), updateConfig(), exportExcel() and reset(). This hook starts the
+// background worker, sends it the file, and passes progress and results back to the screen.
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { DEFAULT_CONFIG, mergeConfig, type ConfigPatch } from '@/lib/engine/config';
 import type { EngineStage, WorkerRequest, WorkerResponse } from '@/lib/engine/protocol';
@@ -10,9 +14,9 @@ import type { Reviews } from '@/lib/ui/review';
 
 export type EngineStatus = 'idle' | 'working' | 'ready' | 'error';
 
-export const ACCEPTED_EXTENSIONS = ['.xlsx', '.xlsm', '.xls', '.csv', '.ods'] as const;
+export const ACCEPTED_EXTENSIONS = ['.xlsx', '.xlsm', '.xls', '.csv', '.ods'] as const;  // file types the engine can read
 const DEFAULT_MAX_BYTES = 50 * 1024 * 1024;
-const REANALYZE_DEBOUNCE_MS = 250;
+const REANALYZE_DEBOUNCE_MS = 250;  // wait this long after a slider moves before re-scoring
 
 /** Where a scanned file came from: the user's own file or one of the demo samples. */
 export type ScanSource = 'upload' | 'sample';
@@ -37,15 +41,15 @@ function newId(): string {
 export function useAnalysisEngine(options: UseAnalysisEngineOptions = {}) {
   const maxFileBytes = options.maxFileBytes ?? DEFAULT_MAX_BYTES;
 
-  const [status, setStatus] = useState<EngineStatus>('idle');
-  const [progress, setProgress] = useState<EngineProgress | null>(null);
-  const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [status, setStatus] = useState<EngineStatus>('idle');  // idle / working / ready / error
+  const [progress, setProgress] = useState<EngineProgress | null>(null);  // for the progress bar
+  const [result, setResult] = useState<AnalysisResult | null>(null);  // the finished analysis
   const [error, setError] = useState<string | null>(null);
   const [file, setFile] = useState<{ name: string; size: number } | null>(null);
   const [config, setConfig] = useState<AnalysisConfig>(() => mergeConfig(DEFAULT_CONFIG, options.initialConfig));
 
-  const workerRef = useRef<Worker | null>(null);
-  const activeId = useRef<string | null>(null);
+  const workerRef = useRef<Worker | null>(null);  // the background worker doing the heavy lifting
+  const activeId = useRef<string | null>(null);  // ignores late replies from cancelled scans
   const configRef = useRef(config);
   const hasData = useRef(false);
   const debounce = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -58,7 +62,7 @@ export function useAnalysisEngine(options: UseAnalysisEngineOptions = {}) {
   /** Fresh worker per file: dropping a new file instantly cancels any in-flight analysis. */
   const spawn = useCallback(() => {
     workerRef.current?.terminate();
-    const worker = new Worker(new URL('../workers/analysis.worker.ts', import.meta.url), { type: 'module' });
+    const worker = new Worker(new URL('../workers/analysis.worker.ts', import.meta.url), { type: 'module' });  // runs workers/analysis.worker.ts off the main page
     worker.onmessage = (e: MessageEvent<WorkerResponse>) => {
       const msg = e.data;
       // Exports run alongside analysis and resolve their own promises.
@@ -148,7 +152,7 @@ export function useAnalysisEngine(options: UseAnalysisEngineOptions = {}) {
       setStatus('working');
       setProgress({ stage: 'reading', label: `Reading ${f.name}`, pct: 0 });
 
-      const buffer = await f.arrayBuffer();
+      const buffer = await f.arrayBuffer();  // read the file into memory (stays in the browser)
       if (activeId.current !== id) return; // user picked another file meanwhile
       const worker = spawn();
       // Transfer (not copy) the buffer — zero-copy hand-off, important for 50 MB files.

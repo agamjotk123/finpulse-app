@@ -1,5 +1,9 @@
 'use client';
 
+// RISK TRACE: the heart-monitor line across the whole sheet.
+// Each spike is a flagged row, its height is the risk score, and high/critical spikes are red.
+// Click a spike to open that row.
+
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { RowRisk } from '@/lib/engine/types';
 import { fmtInt } from '@/lib/ui/format';

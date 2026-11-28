@@ -1,5 +1,8 @@
 'use client';
 
+// REVIEW STATUSES AND NOTES for each flagged row, saved in the browser (localStorage),
+// keyed by file name + size so reopening the same file restores the work. Nothing is uploaded.
+
 import { useCallback, useEffect, useState } from 'react';
 import { EMPTY_REVIEW, type Review, type Reviews } from '@/lib/ui/review';
 

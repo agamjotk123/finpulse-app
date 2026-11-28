@@ -1,5 +1,8 @@
 'use client';
 
+// "TRY A SAMPLE" BUTTONS: load demo spreadsheets so visitors can try Benfora
+// without their own data. The files live in public/samples/.
+
 import { useState } from 'react';
 
 type Props = {
@@ -22,7 +25,7 @@ export function SampleFiles({ onFile }: Props) {
     setLoading(name);
     setError(null);
     try {
-      const res = await fetch(`/${name}`);
+      const res = await fetch(`/samples/${name}`);  // download the sample from public/samples
       if (!res.ok) throw new Error('missing');
       const blob = await res.blob();
       onFile(new File([blob], name, { type: XLSX_TYPE }));

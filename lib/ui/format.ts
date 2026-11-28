@@ -1,3 +1,5 @@
+// Number, date and file-size formatting used on screen (e.g. 1,234.5 or 1.2M).
+
 import type { CellValue } from '@/lib/engine/types';
 
 const plain = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });

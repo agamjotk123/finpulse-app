@@ -1,3 +1,5 @@
+// MODEL 7: Duplicate entries: the same row entered (and maybe paid) twice.
+
 import { makeFinding, type Detector } from './shared';
 import type { Finding } from '../types';
 

@@ -1,5 +1,7 @@
 'use client';
 
+// PROGRESS BAR shown while a file is being read and analysed.
+
 type Props = {
   progress: unknown;
   fileName?: string;

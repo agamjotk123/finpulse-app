@@ -1,3 +1,9 @@
+/*
+ * GLOBAL STYLES: loaded on every page.
+ * Sets up Tailwind, the risk-trace sweep animation, and the print rules that
+ * turn the audit report into a clean A4 PDF ("Save as PDF").
+ */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

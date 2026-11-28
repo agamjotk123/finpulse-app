@@ -1,8 +1,12 @@
+// RISK SCORING: turns many findings into one 0-100 score per row.
+// Evidence about the same number counts once; independent kinds of evidence are combined,
+// so several models agreeing raises the score, but one model repeating itself doesn't.
+
 import { DETECTOR_META } from './types';
 import type { AnalysisConfig, DetectorId, Finding, ParsedSheet, RowRisk, Severity } from './types';
 
 export function severityFor(score: number): Severity {
-  if (score >= 85) return 'critical';
+  if (score >= 85) return 'critical';  // score thresholds for each severity
   if (score >= 65) return 'high';
   if (score >= 40) return 'medium';
   return 'low';
@@ -70,8 +74,8 @@ export function scoreRows(
     buckets.forEach((e) => {
       keep *= 1 - e;
     });
-    const riskScore = Math.round((1 - keep) * 100);
-    if (riskScore < cfg.minRiskScore) return;
+    const riskScore = Math.round((1 - keep) * 100);  // combine all evidence into 0-100
+    if (riskScore < cfg.minRiskScore) return;  // hide rows below the minimum score slider
 
     const first = list[0];
     list.sort((a, b) => b.score - a.score);

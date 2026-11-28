@@ -1,3 +1,5 @@
+// Colours and labels for the four severity levels: critical, high, medium, low.
+
 import type { Severity } from '@/lib/engine/types';
 
 /** Red is reserved for risk. Blue (the pulse) means "worth a look", grey means "minor". */

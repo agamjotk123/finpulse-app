@@ -1,5 +1,8 @@
 'use client';
 
+// ROW DETAILS DRAWER: slides in from the right when a row is clicked.
+// Shows why it was flagged, the full record (suspicious cells in red), and the review status + note.
+
 import { useEffect, useRef } from 'react';
 import { DETECTOR_COUNT, DETECTOR_META, type RowRisk } from '@/lib/engine/types';
 import { fmtCell, fmtNum } from '@/lib/ui/format';

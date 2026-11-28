@@ -1,5 +1,7 @@
 'use client';
 
+// UPLOAD BOX on the home page: drag-and-drop or click to choose a spreadsheet.
+
 import { useRef, useState } from 'react';
 
 type Props = {
@@ -7,7 +9,7 @@ type Props = {
   maxMb: number;
 };
 
-const ACCEPT = '.xlsx,.xls,.csv';
+const ACCEPT = '.xlsx,.xls,.csv';  // file types the picker shows
 
 export function FileDropzone({ onFile, maxMb }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -16,11 +18,11 @@ export function FileDropzone({ onFile, maxMb }: Props) {
 
   function handle(file: File | undefined) {
     if (!file) return;
-    if (!/\.(xlsx|xls|csv)$/i.test(file.name)) {
+    if (!/\.(xlsx|xls|csv)$/i.test(file.name)) {  // reject unsupported file types
       setError('That file type isn’t supported. Use .xlsx, .xls or .csv.');
       return;
     }
-    if (file.size > maxMb * 1024 * 1024) {
+    if (file.size > maxMb * 1024 * 1024) {  // reject files over the size limit
       setError(`That file is larger than ${maxMb} MB. Try a smaller export.`);
       return;
     }

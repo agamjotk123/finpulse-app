@@ -1,7 +1,13 @@
 'use client';
 
+// HOME PAGE (benfora.vercel.app)
+// Shows one of three screens: 1) upload, 2) scanning progress, 3) the results dashboard.
+// All the real work happens in useAnalysisEngine; this file only decides what to show.
+
 import Link from 'next/link';
 import { BrandMark } from '@/components/brand/BrandMark';
+import { SiteNav } from '@/components/SiteNav';
+import { InstallApp } from '@/components/InstallApp';
 import { Dashboard } from '@/components/dashboard/Dashboard';
 import { AnalysisProgress } from '@/components/upload/AnalysisProgress';
 import { FileDropzone } from '@/components/upload/FileDropzone';
@@ -11,40 +17,36 @@ import { track } from '@/lib/analytics';
 import { useAnalysisEngine } from '@/hooks/useAnalysisEngine';
 import { DETECTOR_COUNT } from '@/lib/engine/types';
 
-const MAX_MB = 50;
+const MAX_MB = 50;  // biggest file a visitor can upload
 
 export default function HomePage() {
-  const engine = useAnalysisEngine({ maxFileBytes: MAX_MB * 1024 * 1024 });
-  const working = engine.status === 'working';
-  const firstScan = working && !engine.result;
-  const showUpload = !engine.result && !working;
-  const contact = contactHref();
+  const engine = useAnalysisEngine({ maxFileBytes: MAX_MB * 1024 * 1024 });  // starts the analysis engine (hooks/useAnalysisEngine.ts)
+  const working = engine.status === 'working';  // true while a file is being scanned
+  const firstScan = working && !engine.result;  // first scan: show the progress bar
+  const showUpload = !engine.result && !working;  // nothing scanned yet: show the upload screen
+  const contact = contactHref();  // email/LinkedIn link from lib/site.ts (null if not set)
 
   return (
     <div className="min-h-screen bg-ink text-paper">
       <div className="mx-auto max-w-7xl px-5 pb-24 pt-8 md:px-8">
-        <header className="flex items-center gap-3">
-          <BrandMark size={38} />
-          <span className="text-lg font-semibold tracking-tight [font-stretch:110%]">{SITE.name}</span>
-          {contact && (
-            <a
-              href={contact}
-              target={contact.startsWith('http') ? '_blank' : undefined}
-              rel="noopener noreferrer"
-              onClick={() => track('contact_clicked', { place: 'header' })}
-              className="ml-auto rounded-full border border-graphite px-4 py-2 text-sm text-paper hover:border-paper/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse"
-            >
-              Get in touch
-            </a>
-          )}
+        {/* HEADER: full logo + name (links home), page links, Install app button */}
+        <header className="flex flex-wrap items-center gap-3">
+          <Link href="/" className="flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse">
+            <BrandMark size={44} variant="full" />
+            <span className="text-lg font-semibold tracking-tight [font-stretch:110%]">{SITE.name}</span>
+          </Link>
+          <SiteNav />
+          <InstallApp />
         </header>
 
+        {/* ERROR: e.g. wrong file type or file too large */}
         {engine.error && (
           <div role="alert" className="mt-8 rounded-xl border border-bolt/50 bg-bolt/10 px-5 py-4 text-sm text-paper">
             {engine.error}
           </div>
         )}
 
+        {/* SCREEN 1, UPLOAD: headline, drop zone and sample files */}
         {showUpload && (
           <div className="mx-auto mt-20 max-w-3xl">
             <h1 className="text-5xl font-semibold leading-[1.02] tracking-tight [font-stretch:112%] md:text-7xl">
@@ -60,12 +62,14 @@ export default function HomePage() {
           </div>
         )}
 
+        {/* SCREEN 2, SCANNING: progress bar while the first file is analysed */}
         {firstScan && (
           <div className="mx-auto mt-20 max-w-3xl">
             <AnalysisProgress progress={engine.progress} fileName={engine.file?.name} />
           </div>
         )}
 
+        {/* SCREEN 3, RESULTS: the full dashboard (components/dashboard/Dashboard.tsx) */}
         {engine.result && (
           <div className="mt-12">
             <Dashboard
@@ -78,6 +82,7 @@ export default function HomePage() {
             />
           </div>
         )}
+        {/* FOOTER: privacy note, page links and the "Built by" credit */}
         <footer className="mt-24 flex flex-wrap items-center justify-between gap-4 border-t border-graphite/60 pt-6 text-sm text-haze">
           <p className="max-w-xl">Your files are analysed in your browser and never uploaded. We count anonymous usage, like how many scans are run, but never see your data.</p>
           <p className="flex gap-4">

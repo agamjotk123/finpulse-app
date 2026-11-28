@@ -1,3 +1,6 @@
+// PRINTABLE AUDIT REPORT (what "Save as PDF" produces): summary, figures, patterns,
+// risk trace, rows needing attention, Benford results, method and a signature block.
+
 import { BrandMark } from '@/components/brand/BrandMark';
 import { PulseStrip } from '@/components/dashboard/PulseStrip';
 import { DETECTOR_COUNT, DETECTOR_META, type AnalysisResult, type DetectorId, type RowRisk } from '@/lib/engine/types';
@@ -13,7 +16,7 @@ interface Props {
   preparedBy: string;
 }
 
-const MAX_TABLE_ROWS = 150;
+const MAX_TABLE_ROWS = 150;  // cap on rows listed in the PDF; the Excel export has all
 const INK = '#0B0C10';
 const MUTED = '#5B606C';
 const RULE = '#D9DBE1';

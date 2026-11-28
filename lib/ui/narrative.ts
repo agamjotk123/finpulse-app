@@ -1,3 +1,5 @@
+// Writes the plain-English summary paragraph at the top of the PDF report.
+
 import { DETECTOR_COUNT } from '@/lib/engine/types';
 import type { AnalysisResult } from '@/lib/engine/types';
 import { fmtInt } from './format';

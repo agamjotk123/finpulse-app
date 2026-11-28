@@ -1,5 +1,7 @@
 'use client';
 
+// HEADLINE NUMBERS under the risk trace: rows scanned, flagged, critical, money at risk.
+
 import { fmtInt, fmtNum } from '@/lib/ui/format';
 
 interface Props {

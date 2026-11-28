@@ -1,3 +1,6 @@
+// SHARED DATA SHAPES used across the engine and screens: a parsed sheet, a finding,
+// a flagged row, the settings and the full result. DETECTOR_META names and weights each model.
+
 /**
  * Benfora: core engine types.
  * Shared by the Web Worker, the React hook and (later) the dashboard + export layers.

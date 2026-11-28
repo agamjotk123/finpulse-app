@@ -1,5 +1,8 @@
 'use client';
 
+// REVIEW QUEUE: the table of flagged rows, with search, severity filters, paging,
+// and a status dropdown per row (saved by hooks/useReviews.ts).
+
 import { useMemo, useState } from 'react';
 import { DETECTOR_COUNT, DETECTOR_META, type RowRisk, type Severity } from '@/lib/engine/types';
 import { fmtCell, fmtInt } from '@/lib/ui/format';
@@ -16,7 +19,7 @@ interface Props {
   initialQuery?: string;
 }
 
-const PAGE = 25;
+const PAGE = 25;  // rows per page
 type StatusFilter = ReviewStatus | 'all';
 
 export function ReviewTable({ rows, getReview, onReview, onOpen, selectedKey, initialQuery = '' }: Props) {

@@ -1,3 +1,5 @@
+// Common pieces for all detection models: the Detector type and makeFinding().
+
 import type { AnalysisConfig, ColumnProfile, CorrelationMatrix, DetectorId, Finding, ParsedSheet, Pattern } from '../types';
 
 export interface DetectorOutput {

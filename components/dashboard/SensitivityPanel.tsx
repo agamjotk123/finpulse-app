@@ -1,5 +1,8 @@
 'use client';
 
+// SENSITIVITY PANEL (right side of the dashboard): presets, minimum risk slider,
+// per-model sliders and on/off switches. Changes re-score the file instantly.
+
 import type { ConfigPatch } from '@/lib/engine/config';
 import { DETECTOR_META, type AnalysisConfig, type AnalysisModule, type DetectorId } from '@/lib/engine/types';
 
@@ -12,6 +15,7 @@ interface Props {
 type PresetId = 'conservative' | 'balanced' | 'thorough';
 
 /** Plain-language presets. Most users never need the individual thresholds. */
+// The three presets. Change these numbers to make each preset stricter or looser.
 const PRESETS: Record<PresetId, { label: string; hint: string; patch: ConfigPatch }> = {
   conservative: {
     label: 'Strict',

@@ -1,3 +1,5 @@
+// MODEL 4: Isolation Forest. Finds rows whose COMBINATION of values is unusual.
+
 import { applyTransform, chooseTransform, clamp, finite, fmt, materiality, mulberry32, robustScale } from '../stats';
 import { analyzableColumns, makeFinding, type Detector } from './shared';
 import type { Finding } from '../types';

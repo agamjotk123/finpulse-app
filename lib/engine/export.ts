@@ -1,3 +1,6 @@
+// EXCEL EXPORT: builds the downloadable workbook (Summary, Patterns, Flagged rows with
+// review notes, All findings, and the original data with risk columns). Runs in the worker.
+
 import * as XLSX from 'xlsx';
 import { DETECTOR_COUNT, DETECTOR_META } from './types';
 import type { AnalysisResult, CellValue, ParsedSheet, ParsedWorkbook, RowRisk } from './types';

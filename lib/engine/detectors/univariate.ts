@@ -1,3 +1,5 @@
+// MODELS 1-3: Z-score, Robust MAD and IQR. Each checks one column at a time for values far from normal.
+
 import {
   applyTransform,
   chooseTransform,

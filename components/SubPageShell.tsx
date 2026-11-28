@@ -1,3 +1,6 @@
+// PAGE FRAME for secondary pages (About, Feedback...): header with logo and nav,
+// the page content, and the footer. Wrap a new page in <SubPageShell> to get the same look.
+
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { BrandMark } from '@/components/brand/BrandMark';
@@ -22,14 +25,15 @@ export interface SubPageShellProps {
 }
 
 export function SubPageShell({ children, title, heading, subtitle, description, intro, eyebrow }: SubPageShellProps) {
-  const head = title ?? heading;
-  const sub = subtitle ?? description ?? intro;
+  const head = title ?? heading;  // accepts either prop name
+  const sub = subtitle ?? description ?? intro;  // accepts any of these prop names
   return (
     <div className="min-h-screen bg-ink text-paper">
       <div className="mx-auto max-w-3xl px-5 pb-24 pt-8 md:px-8">
         <header className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse">
-            <BrandMark size={38} />
+            {/* variant="full" = complete logo; "mini" = simplified, for tiny sizes */}
+            <BrandMark size={44} variant="full" />
             <span className="text-lg font-semibold tracking-tight">{SITE.name}</span>
           </Link>
           <SiteNav />
@@ -43,9 +47,9 @@ export function SubPageShell({ children, title, heading, subtitle, description, 
           </div>
         )}
 
-        <main className="mt-12 text-paper/85 [&_a]:text-pulse [&_a]:underline [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:text-paper [&_p]:mt-4 [&_p]:leading-relaxed">
+        <div className="mt-12 text-paper/85 [&_a]:text-pulse [&_a]:underline [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:text-paper [&_p]:mt-4 [&_p]:leading-relaxed">
           {children}
-        </main>
+        </div>
 
         <footer className="mt-24 flex flex-wrap items-center justify-between gap-4 border-t border-graphite/60 pt-6 text-sm text-haze">
           <p>Your files are analysed in your browser and never uploaded.</p>

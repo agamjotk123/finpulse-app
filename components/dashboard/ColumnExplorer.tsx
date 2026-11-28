@@ -1,5 +1,8 @@
 'use client';
 
+// COLUMN EXPLORER TAB: chart of one column over time.
+// Blue dots = normal values, red = flagged, shaded band = typical range. Hand-drawn SVG, no chart library.
+
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { AnalysisResult, SeriesPoint } from '@/lib/engine/types';
 import { fmtDate, fmtInt, fmtNum } from '@/lib/ui/format';
@@ -11,7 +14,7 @@ interface Props {
   onOpen: (key: string) => void;
 }
 
-const H = 340;
+const H = 340;  // chart height in pixels
 const PAD = { top: 16, right: 16, bottom: 34, left: 64 };
 
 function useWidth<T extends HTMLElement>() {

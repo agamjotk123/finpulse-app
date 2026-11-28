@@ -1,15 +1,18 @@
+// ABOUT US PAGE (benfora.vercel.app/about)
+// The founder's story and what Benfora stands for. Edit the text below to change the page.
+
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { SubPageShell } from '@/components/SubPageShell';
 import { SITE, contactHref } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: `About us | ${SITE.name}`,
-  description: `Meet the person behind ${SITE.name}.`,
+  title: `About us | ${SITE.name}`,  // browser-tab title for this page
+  description: `Meet the person behind ${SITE.name}.`,  // text shown in link previews
 };
 
 export default function AboutPage() {
-  const contact = contactHref();
+  const contact = contactHref();  // email/LinkedIn link from lib/site.ts (null if not set)
 
   return (
     <SubPageShell>

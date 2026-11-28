@@ -1,5 +1,8 @@
 'use client';
 
+// REPORT PREVIEW: shows the report on a white A4 page with a "Save as PDF" button
+// that opens the browser's print dialog.
+
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { AnalysisResult } from '@/lib/engine/types';
