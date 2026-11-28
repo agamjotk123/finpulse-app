@@ -29,7 +29,7 @@ export function SubPageShell({ children, title, heading, subtitle, description, 
       <div className="mx-auto max-w-3xl px-5 pb-24 pt-8 md:px-8">
         <header className="flex items-center gap-3 rounded-full border border-white/[0.07] bg-white/[0.04] py-2.5 pl-3 pr-3 backdrop-blur-xl">
           <Link href="/" className="flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse">
-            <BrandMark size={38} />
+            <BrandMark size={42} variant="full" />
             <span className="text-lg font-semibold tracking-tight">{SITE.name}</span>
           </Link>
           <SiteNav />
